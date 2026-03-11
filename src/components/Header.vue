@@ -3,7 +3,10 @@
 </script>
 
 <template>
-<header>Hello World</header>
+<header>
+    <RouterLink to="/">Home</RouterLink>
+    <RouterLink to="/test">Test</RouterLink>
+</header>
 </template>
 
 <style scoped>
