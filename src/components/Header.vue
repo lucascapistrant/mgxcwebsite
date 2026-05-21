@@ -134,7 +134,7 @@ nav {
 }
 
 .animate {
-    animation: bounce 0.3s ease-in-out forwards;
+    animation: wobble 0.3s ease-in-out;
 }
 
 /* Desktop */
@@ -175,13 +175,11 @@ nav {
 }
 
 /* animations */
-@keyframes bounce {
-    0% { transform: scale(1) }
-    25% { transform: scale(1.2) }
-    50% { transform: scale(1) }
-    75% { transform: scale(1.2) }
-    80% { transform: scale(1) }
-
+@keyframes wobble {
+    0%   { transform: scale(1)    rotate(0deg); }
+    25%  { transform: scale(0.9)  rotate(-15deg); }
+    75%  { transform: scale(0.9)  rotate(15deg); }
+    100% { transform: scale(1)    rotate(0deg); }
 }
 </style>
 
