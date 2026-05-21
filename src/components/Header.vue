@@ -54,7 +54,7 @@ header {
     display: flex;
     z-index: 1;
     img {
-        width: 50px;
+        width: 65px;
         padding-right: 10px;
     }
     h1 {
@@ -125,7 +125,6 @@ nav {
 }
 
 .overlay {
-    background-color: blue;
     z-index: 0;
     position: fixed;
     top: 0;
