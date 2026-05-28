@@ -79,6 +79,7 @@ header {
 nav {
     height: fit-content;
     /* position: relative; */
+    z-index: 10;
 
     button {
         background: none;
