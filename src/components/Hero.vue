@@ -1,12 +1,14 @@
 <script setup>
 import { nextTick, onMounted, onUnmounted, ref, useTemplateRef, computed} from 'vue';
 import { useStrapi } from '../composables/useStrapi.js'
+import { useHeroStore } from '@/stores/heroStore.js';
+const heroStore = useHeroStore()
 const imageContainer = useTemplateRef('imageContainer');
 const { get } = useStrapi();
 const hero = useTemplateRef('touchBox');
 const index = ref(1)
 
-const images = ref([])
+const images = computed(() => heroStore.images)
 const imagesWithClone = computed(() => {
     if (images.value.length === 0) return []
     return [images.value[images.value.length - 1], ...images.value, images.value[0]]
@@ -55,8 +57,8 @@ function startAutoAdvance() {
 
 
 onMounted(async() => {
-    const data = await get('hero-images?populate=*');
-    images.value = data.data
+    await heroStore.fetchImages()
+    images.value = heroStore.images
 
     await nextTick();
     startAutoAdvance();

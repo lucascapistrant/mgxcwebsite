@@ -96,9 +96,11 @@ nav {
     display: flex;
     flex-direction: column;
     right: 0;
+    top: 0;
     padding: 20px;
+    padding-top: 80px;
     box-sizing: border-box;
-    border-radius: 0 0 0 30px;
+    border-radius: 30px 0 0 30px;
     background: var(--color-primary);
     a {
         color: var(--color-secondary);
@@ -132,6 +134,8 @@ nav {
     left: 0;
     width: 100%;
     height: 100%;
+    background-color: var(--color-background);
+    opacity: .3;
 }
 
 .animate {
