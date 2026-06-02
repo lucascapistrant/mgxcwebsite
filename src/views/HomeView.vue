@@ -1,10 +1,12 @@
 <script setup>
 import Hero from '@/components/Hero.vue';
+import PostFeed from '@/components/PostFeed.vue';
+
 </script>
 
 <template>
     <Hero />
-    <h1>HomeView Hello World!</h1>
+    <PostFeed />
 </template>
 
 <style scoped>
