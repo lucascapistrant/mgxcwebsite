@@ -187,7 +187,7 @@ onMounted(() => {
     border: 2px solid var(--color-primary);
     border-radius: 10px;
     width: 100%;
-    background-color: #1B1B1B;
+    background-color: var(--color-object);
     padding: 10px;
     display: flex;
     flex-direction: column;

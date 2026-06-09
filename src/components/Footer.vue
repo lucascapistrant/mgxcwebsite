@@ -72,8 +72,16 @@ onUnmounted(() => {
 </script>
 
 <template>
+<div class="socials-container">
+    <div class="socials-section mobile-only">
+        <a href="https://forms.zohopublic.com/safeteam1/form/MapleGroveCrossCountrySafeTeamRegistration/formperma/_lLgp0nr7KA2K8Om4Fj4LIGsa1UsUGO1VyztfR7A-GQ" target="_blank"><img src="../assets/hello-team-logo.webp" alt="Safe Team Website Link" class="icon"></a>
+        <a href="https://x.com/mgcrimsonxc" target="_blank"><IconX class="icon"/></a>
+        <a href="https://www.instagram.com/mg.crosscountry/" target="_blank"><IconInstagram class="icon"/></a>
+        <a href="https://github.com/lucascapistrant/mgxcwebsite" target="_blank"><IconGithub class="icon"/></a>
+    </div>
+</div>
 <footer>
-    <div class="socials-section">
+    <div class="socials-section desktop-only">
         <a href="https://forms.zohopublic.com/safeteam1/form/MapleGroveCrossCountrySafeTeamRegistration/formperma/_lLgp0nr7KA2K8Om4Fj4LIGsa1UsUGO1VyztfR7A-GQ" target="_blank"><img src="../assets/hello-team-logo.webp" alt="Safe Team Website Link" class="icon"></a>
         <a href="https://x.com/mgcrimsonxc" target="_blank"><IconX class="icon"/></a>
         <a href="https://www.instagram.com/mg.crosscountry/" target="_blank"><IconInstagram class="icon"/></a>
@@ -122,6 +130,36 @@ footer {
 
 .socials-section, .weblinks-section {
     display: none;
+}
+
+.socials-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+
+.mobile-only {
+    width: 70%;
+    max-width: 250px;
+    background: var(--color-object);
+    padding: 10px;
+    border-radius: 30px;
+    border: 2px solid var(--color-primary);
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    a {
+        display: flex;
+        justify-content: center;
+        flex: 1;
+    }
+
+    .icon {
+        width: 30px;
+        fill: var(--color-secondary);
+    }
 }
 
 .sponsors-section {
@@ -253,6 +291,10 @@ footer {
     .sponsors-container {
         width: fit-content;
         max-width: 400px;
+    }
+
+    .socials-container {
+        display: none;
     }
 
     .socials-section {
