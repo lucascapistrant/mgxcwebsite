@@ -3,8 +3,8 @@ import { ref, onMounted, computed } from 'vue';
 import fm from 'front-matter';
 
 const allPosts = ref([]);
-const displayCount = ref(5); // How many posts to show initially
-const postsPerPage = 5;      // How many posts to add on "Load More"
+const postsPerPage = 10; // How many posts to add on "Load More"
+const displayCount = ref(postsPerPage); // How many posts to show initially
 const loading = ref(false);
 
 const lightBoxImage = ref();
@@ -187,6 +187,7 @@ onMounted(() => {
     border: 2px solid var(--color-primary);
     border-radius: 10px;
     width: 100%;
+    max-width: 800px;
     background-color: var(--color-object);
     padding: 10px;
     display: flex;
@@ -302,6 +303,13 @@ onMounted(() => {
     }
     100% {
         opacity: 1;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .lightbox img {
+        max-width: 60vw;
+        max-height: 60vh;
     }
 }
 </style>
