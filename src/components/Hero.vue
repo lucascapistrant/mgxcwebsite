@@ -1,18 +1,17 @@
 <script setup>
-import { nextTick, onMounted, onUnmounted, ref, useTemplateRef, computed} from 'vue';
-import { useStrapi } from '../composables/useStrapi.js'
-import { useHeroStore } from '@/stores/heroStore.js';
-const heroStore = useHeroStore()
-const imageContainer = useTemplateRef('imageContainer');
-const { get } = useStrapi();
-const hero = useTemplateRef('touchBox');
-const index = ref(1)
+import { nextTick, onMounted, onUnmounted, ref, useTemplateRef, computed } from 'vue';
+import fm from 'front-matter';
 
-const images = computed(() => heroStore.images)
+const imageContainer = useTemplateRef('imageContainer');
+const hero = useTemplateRef('touchBox');
+const index = ref(1);
+
+const images = ref([]);
+
 const imagesWithClone = computed(() => {
-    if (images.value.length === 0) return []
-    return [images.value[images.value.length - 1], ...images.value, images.value[0]]
-})
+    if (images.value.length === 0) return [];
+    return [images.value[images.value.length - 1], ...images.value, images.value[0]];
+});
 
 let imageSlideInterval;
 let touchStartX;
@@ -21,7 +20,6 @@ function changeImageSlide(newIndex) {
     index.value = newIndex;
     imageContainer.value.style.transform = `translateX(${-index.value * 100}%)`;
 
-    // snapped past the right end — snap to real first
     if (newIndex >= imagesWithClone.value.length - 1) {
         setTimeout(() => {
             imageContainer.value.style.transition = 'none';
@@ -29,11 +27,10 @@ function changeImageSlide(newIndex) {
             imageContainer.value.style.transform = `translateX(-100%)`;
             setTimeout(() => {
                 imageContainer.value.style.transition = 'transform .3s ease-in-out';
-            }, 50)
-        }, 300)
+            }, 50);
+        }, 300);
     }
 
-    // snapped past the left end — snap to real last
     if (newIndex <= 0) {
         setTimeout(() => {
             imageContainer.value.style.transition = 'none';
@@ -41,11 +38,11 @@ function changeImageSlide(newIndex) {
             imageContainer.value.style.transform = `translateX(${-images.value.length * 100}%)`;
             setTimeout(() => {
                 imageContainer.value.style.transition = 'transform .3s ease-in-out';
-            }, 50)
-        }, 300)
+            }, 50);
+        }, 300);
     }
 
-    startAutoAdvance()
+    startAutoAdvance();
 }
 
 function startAutoAdvance() {
@@ -55,37 +52,51 @@ function startAutoAdvance() {
     }, 7000);
 }
 
+onMounted(async () => {
+    const fileModules = import.meta.glob('../content/hero-images/*.md', {
+        query: '?raw',
+        import: 'default',
+        eager: true
+    });
 
-onMounted(async() => {
-    await heroStore.fetchImages()
-    images.value = heroStore.images
+    const loadedImages = [];
+
+    // 2. Loop through files and extract the "hero_image" string from frontmatter
+    for (const path in fileModules) {
+        const rawText = fileModules[path];
+        const parsed = fm(rawText);
+        
+        if (parsed.attributes.hero_image) {
+            loadedImages.push(parsed.attributes.hero_image);
+        }
+    }
+
+    images.value = loadedImages;
 
     await nextTick();
     startAutoAdvance();
 
     hero.value.addEventListener("touchstart", (e) => {
         touchStartX = e.touches[0].clientX;
-    })
+    });
 
     hero.value.addEventListener("touchend", (e) => {
         if (touchStartX === undefined) return;
         const touchEndX = e.changedTouches[0].clientX;
-        const diff = touchStartX - touchEndX
+        const diff = touchStartX - touchEndX;
         if (Math.abs(diff) < 50) return;
 
         if (diff > 0) {
-            changeImageSlide(index.value + 1)
+            changeImageSlide(index.value + 1);
+        } else {
+            changeImageSlide(index.value - 1);
         }
-        else {
-            changeImageSlide(index.value - 1)
-        }
-    })
-})
+    });
+});
 
 onUnmounted(() => {
     clearInterval(imageSlideInterval);
-})
-
+});
 </script>
 
 <template>
@@ -104,7 +115,7 @@ onUnmounted(() => {
     </div>
     <div class="img-overlay" ref="imgOverlay"></div>
     <div class="images-container" ref="imageContainer">
-        <img  v-for="(img, i) in imagesWithClone" :src="img.image.url" :key="i" class="img">
+        <img v-for="(img, i) in imagesWithClone" :src="img" :key="i" class="img">
     </div>
 </div>
 </template>

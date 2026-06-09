@@ -1,49 +1,74 @@
 <script setup>
 import { ref, onMounted, nextTick, onUnmounted } from 'vue'
-import { useStrapi } from '../composables/useStrapi.js'
+import fm from 'front-matter';
 import IconInstagram from './icons/IconInstagram.vue';
 import IconX from './icons/IconX.vue';
 import IconGithub from './icons/IconGithub.vue';
-import LoadingWrapper from './LoadingWrapper.vue';
-const { get } = useStrapi();
-const sponsors = ref([])
+
 const shouldScroll = ref(false)
 const containerRef = ref(null)
-const trackRef = ref(null)
-
 const observer = ref(null);
+const scrollSpeed = 50; // px per second
+const scrollDuration = ref(0);
+
+const sponsors = ref([])
 
 onMounted(async() => {
-    const data = await get('sponsors?populate=*');
-    sponsors.value = data.data
+    const fileModules = import.meta.glob('../content/sponsor-logos/*.md', {
+        query: '?raw',
+        import: 'default',
+        eager: true
+    });
+
+    const loadedSponsors = [];
+
+    for (const path in fileModules) {
+        const rawText = fileModules[path];
+        const parsed = fm(rawText);
+        
+        if (parsed.attributes.sponsor_logo) {
+            loadedSponsors.push({
+                logo: parsed.attributes.sponsor_logo,
+                companyLink: parsed.attributes.company_link || '#' 
+            });
+        }
+    }
+
+    sponsors.value = loadedSponsors;
+    console.log('Processed Sponsors Data:', sponsors.value);
 
     await nextTick()
-    const images = document.querySelectorAll('#sponsor-track-original img')
-    await Promise.all(
-        [...images].map(img => img.complete ? Promise.resolve() :
-            new Promise(resolve => {img.onload = resolve; img.onerror = resolve;}))
-    )
-
-    const trackElement = document.getElementById("sponsor-track-original")
-    const containerElement = document.getElementById("sponsors-container")
-    const trackWidth = trackElement.getBoundingClientRect().width
-    const containerWidth = containerElement.getBoundingClientRect().width
-    shouldScroll.value = trackWidth > containerWidth
+    
+    // Safety check in case elements haven't rendered yet
+    calculateShouldScroll();
 
     observer.value = new ResizeObserver(() => {
-        const trackElement = document.getElementById("sponsor-track-original")
-        const containerElement = document.getElementById("sponsors-container")
+        calculateShouldScroll();
+    })
+    
+    if (containerRef.value) {
+        observer.value.observe(containerRef.value)
+    }
+})
+
+function calculateShouldScroll() {
+    const trackElement = document.getElementById("sponsor-track-original")
+    const containerElement = document.getElementById("sponsors-container")
+    
+    if (trackElement && containerElement) {
         const trackWidth = trackElement.getBoundingClientRect().width
         const containerWidth = containerElement.getBoundingClientRect().width
         shouldScroll.value = trackWidth > containerWidth
-    })
-    observer.value.observe(containerRef.value)
-})
+    }
+
+    if (shouldScroll.value) {
+        scrollDuration.value = trackElement.getBoundingClientRect().width / scrollSpeed
+    }
+}
 
 onUnmounted(() => {
     observer.value?.disconnect();
 })
-
 </script>
 
 <template>
@@ -56,70 +81,31 @@ onUnmounted(() => {
     </div>
     <div class="sponsors-section">
         <h2>SPONSORS</h2>
-        <LoadingWrapper :loading="sponsors.length === 0">
-            <div id="sponsors-container" class="sponsors-container" ref="containerRef" :class="{ vignette: !shouldScroll }" >
-                <div class="sponsors-track" ref="trackRef" :class="{ scrolling: shouldScroll }">
-                    <div id="sponsor-track-original">
-                        <div class="sponsor" v-for="(sponsor, i) in sponsors" :key="'a' + i">
-                            <a :href="sponsor.companyLink" target="_blank">
-                                <img :src="sponsor.companyLogo.url" class="sponsor_img" alt="">
-                            </a>
-                        </div>
-                    </div>
-                    <div class="sponsor" v-for="(sponsor, i) in sponsors" :key="'b' + i" v-if="shouldScroll">
+        <div id="sponsors-container" class="sponsors-container" ref="containerRef" :class="{ vignette: !shouldScroll }" >
+            <div class="sponsors-track" :style="shouldScroll ? { animationDuration: scrollDuration + 's' } : {}" :class="{ scrolling: shouldScroll }">
+                <div id="sponsor-track-original">
+                    <div class="sponsor" v-for="(sponsor, i) in sponsors" :key="'a' + i">
                         <a :href="sponsor.companyLink" target="_blank">
-                            <img :src="sponsor.companyLogo.url" class="sponsor_img" alt="">
+                            <img :src="sponsor.logo" class="sponsor_img" alt="Sponsor Logo" @load="calculateShouldScroll">
                         </a>
                     </div>
                 </div>
+                
+                <template v-if="shouldScroll">
+                    <div class="sponsor" v-for="(sponsor, i) in sponsors" :key="'b' + i">
+                        <a :href="sponsor.companyLink" target="_blank">
+                            <img :src="sponsor.logo" class="sponsor_img" alt="Sponsor Logo">
+                        </a>
+                    </div>
+                </template>
+
             </div>
-        </LoadingWrapper>
+        </div>
     </div>
     <div class="weblinks-section">
         <a href="https://maplegrovetrack.github.io/" target="_blank">Maple Grove Track and Field</a>
         <a href="#" target="_blank">Maple Grove Nordic Ski</a>
     </div>
-    
-    <!-- Dev fake database results for styling -->
-     <!-- <div class="sponsors-section">
-         <h2>SPONSORS</h2>
-         <div class="sponsors-container" ref="containerRef">
-            <div id="track" class="sponsors-track" ref="trackRef" :class="{scrolling: shouldScroll}">
-                <div class="sponsor">
-                    <a href="#" target="_blank">
-                        <img src="../assets/mgxc_logo.svg" class="sponsor_img" alt="">
-                    </a>
-                </div>
-                <div class="sponsor">
-                    <a href="#" target="_blank">
-                        <img src="../assets/mgxc_logo.svg" class="sponsor_img" alt="">
-                    </a>
-                </div>
-                <div class="sponsor">
-                    <a href="#" target="_blank">
-                        <img src="../assets/mgxc_logo.svg" class="sponsor_img" alt="">
-                    </a>
-                </div>
-                <div v-if="shouldScroll">
-                    <div class="sponsor" >
-                        <a href="#" target="_blank">
-                            <img src="../assets/mgxc_logo.svg" class="sponsor_img" alt="">
-                        </a>
-                    </div>
-                    <div class="sponsor">
-                        <a href="#" target="_blank">
-                            <img src="../assets/mgxc_logo.svg" class="sponsor_img" alt="">
-                        </a>
-                    </div>
-                    <div class="sponsor">
-                        <a href="#" target="_blank">
-                            <img src="../assets/mgxc_logo.svg" class="sponsor_img" alt="">
-                        </a>
-                    </div>
-                </div>
-            </div>
-         </div>
-     </div> -->
 </footer>
 </template>
 
@@ -145,8 +131,7 @@ footer {
     flex: 1;
     min-height: 0;
     overflow: hidden;
-    width: 100%;
-    max-width: 400px;
+    width: 90%;
 
     h2 {
         font-size: 2rem;
@@ -204,7 +189,9 @@ footer {
 }
 
 .scrolling {
-    animation: scroll-sponsors 15s linear infinite;
+    animation-name: scroll-sponsors;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
 }
 
 .sponsors-track:hover {
@@ -237,7 +224,6 @@ footer {
 .sponsor_img {
     height: 100%;
     width: auto;
-    background-color: red;
 }
 
 @media screen and (min-width: 768px) {
@@ -250,6 +236,8 @@ footer {
     }
 
     .sponsors-section {
+        width: 100%;
+        max-width: 400px;
         height: 100%;
         flex: unset;
 
@@ -264,6 +252,7 @@ footer {
 
     .sponsors-container {
         width: fit-content;
+        max-width: 400px;
     }
 
     .socials-section {

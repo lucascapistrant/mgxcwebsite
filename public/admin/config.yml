@@ -1,0 +1,43 @@
+# Local testing configuration (explained in Step 3)
+local_backend: true
+
+backend:
+  name: github
+  repo: lucascapistrant/mgxcwebsite # Path to your GitHub repo
+  branch: main
+
+media_folder: "public/images" # Where uploaded images go
+public_folder: "/images"       # How Vue references those images
+
+logo:
+  src: public/mgxc_logo.png
+  show_in_header: true
+
+collections:
+  - name: "sponsor-logos"
+    label: "Sponsor Logos"
+    folder: "src/content/sponsor-logos"
+    create: true
+    fields:
+      - { label: "Sponsor Logo", name: "sponsor_logo", widget: "image" }
+      - { label: "Company Website Link", name: "company_link", widget: "string" }
+  - name: "hero-images"
+    label: "Front page images"
+    folder: "src/content/hero-images"
+    create: true
+    fields:
+      - {label: "Featured Image", name: "hero_image", widget: "image"}
+  - name: "posts"
+    label: "Post"
+    folder: "src/content/posts"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Publish Date", name: "date", widget: "datetime" }
+      - label: "Images"
+        name: "images"
+        widget: "list"
+        required: false
+        field: { label: "Image", name: "image", widget: "image" }
+      - { label: "Body Text", name: "body", widget: "markdown", required: false }

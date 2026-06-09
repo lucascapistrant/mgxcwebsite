@@ -1,35 +1,54 @@
 <script setup>
-import { ref, onMounted, computed} from 'vue';
-import { usePostStore } from '@/stores/postStore';
-import { storeToRefs } from 'pinia';
-const postStore = usePostStore()
-const { posts, fetchPosts, hasMore, loading } = storeToRefs(postStore)
+import { ref, onMounted, computed } from 'vue';
+import fm from 'front-matter';
+
+const allPosts = ref([]);
+const displayCount = ref(5); // How many posts to show initially
+const postsPerPage = 5;      // How many posts to add on "Load More"
+const loading = ref(false);
+
 const lightBoxImage = ref();
-const touchStartX = ref({})
-const imageIndexes = ref({})
+const touchStartX = ref({});
+const imageIndexes = ref({});
+
+
+const posts = computed(() => {
+    return allPosts.value.slice(0, displayCount.value);
+});
+
+const hasMore = computed(() => {
+    return displayCount.value < allPosts.value.length;
+});
+
+function loadMore() {
+    loading.value = true;
+    setTimeout(() => {
+        displayCount.value += postsPerPage;
+        loading.value = false;
+    }, 400); 
+}
 
 function getImageIndex(post) {
-    if (imageIndexes.value[post.id] === undefined) imageIndexes.value[post.id] = 0
-    return imageIndexes.value[post.id]
+    if (imageIndexes.value[post.id] === undefined) imageIndexes.value[post.id] = 0;
+    return imageIndexes.value[post.id];
 }
 
 function nextImage(post) {
-    const current = getImageIndex(post)
-    imageIndexes.value[post.id] = (current + 1) % post.images.length
+    const current = getImageIndex(post);
+    imageIndexes.value[post.id] = (current + 1) % post.images.length;
 }
 
 function prevImage(post) {
-    const current = getImageIndex(post)
-    imageIndexes.value[post.id] = (current - 1 + post.images.length) % post.images.length
+    const current = getImageIndex(post);
+    imageIndexes.value[post.id] = (current - 1 + post.images.length) % post.images.length;
 }
 
 function showImage(img) {
-    lightBoxImage.value = img
-    console.log(lightBoxImage.value)
+    lightBoxImage.value = img;
 }
 
 function onTouchStart(e, postId) {
-    touchStartX.value[postId] = e.touches[0].clientX
+    touchStartX.value[postId] = e.touches[0].clientX;
 }
 
 function onTouchEnd(e, post) {
@@ -37,19 +56,43 @@ function onTouchEnd(e, post) {
     if (start === undefined) return;
 
     const touchEndX = e.changedTouches[0].clientX;
-    const diff = start - touchEndX
+    const diff = start - touchEndX;
     if (Math.abs(diff) < 50) return;
-    if(diff > 0) {
-        nextImage(post)
+    if (diff > 0) {
+        nextImage(post);
     } else {
-        prevImage(post)
+        prevImage(post);
     }
-
 }
 
-onMounted(async () => {
-    await postStore.fetchPosts()
-})
+onMounted(() => {
+    const fileModules = import.meta.glob('../content/posts/*.md', {
+        query: '?raw',
+        import: 'default',
+        eager: true
+    });
+
+    const loadedPosts = [];
+
+    for (const path in fileModules) {
+        const rawText = fileModules[path];
+        const parsed = fm(rawText);
+        
+        const slugId = path.split('/').pop().replace('.md', '');
+
+        loadedPosts.push({
+            id: slugId,
+            title: parsed.attributes.title || 'Untitled Post',
+            rawDate: parsed.attributes.date ? new Date(parsed.attributes.date) : new Date(0),
+            date: parsed.attributes.date ? new Date(parsed.attributes.date).toLocaleDateString() : '',
+            images: parsed.attributes.images || [],
+            text: parsed.body || ''
+        });
+    }
+
+    // Sort posts from newest to oldest
+    allPosts.value = loadedPosts.sort((a, b) => b.rawDate - a.rawDate);
+});
 </script>
 
 <template>
@@ -61,7 +104,7 @@ onMounted(async () => {
 </Transition>
     <div class="feed">
         <h2 class="heading">Team Feed</h2>
-        <div v-for="(post, i) in posts" class="post">
+        <div v-for="post in posts" :key="post.id" class="post">
             <div class="post-header">
                 <h3>{{ post.title }}</h3>
                 <p class="post-date">{{ post.date }}</p>
@@ -78,14 +121,15 @@ onMounted(async () => {
                 <button class="img-arrow" v-if="post.images.length > 1" @click="nextImage(post)">&#10095;</button>
             </div>
             <div class="post-body">
-                <p>{{ post.text }}</p>
+                <p class="body-text">{{ post.text }}</p>
             </div>
         </div>
+        
         <button 
             class="load-more"
             :class="{loading: loading}"
             v-if="hasMore" 
-            @click="postStore.fetchPosts()"
+            @click="loadMore"
             :disabled="loading"
         >
             {{ loading ? 'Loading...' : 'Load More' }}
