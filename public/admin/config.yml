@@ -34,10 +34,19 @@ collections:
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     fields:
       - { label: "Title", name: "title", widget: "string" }
-      - { label: "Publish Date", name: "date", widget: "datetime" }
+      - { label: "Publish Date", name: "date", widget: "datetime", format: "MMM, DD, YYYY" }
       - label: "Images"
         name: "images"
         widget: "list"
         required: false
         field: { label: "Image", name: "image", widget: "image" }
       - { label: "Body Text", name: "body", widget: "markdown", required: false }
+  - name: "schedule"
+    label: "Schedule"
+    folder: "src/content/schedule"
+    create: true
+    fields:
+      - { label: "Event Name", name: "event_name", widget: "string" }
+      - { label: "Event Date", name: "event_date", widget: "datetime", format: "MMM, DD, YYYY h:mm A" }
+      - { label: "Event Location", name: "event_location", widget: "string", required: false }
+      - { label: "Event Description", name: "event_description", widget: "markdown", required: false }

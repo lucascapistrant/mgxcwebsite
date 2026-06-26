@@ -30,7 +30,7 @@ function triggerAnimation() {
         <Transition name="nav-slide">
             <div class="nav_links" v-show="menuOpen" @click="menuOpen = false">
                 <RouterLink to="/">Home</RouterLink>
-                <RouterLink to="/test">Test</RouterLink>
+                <RouterLink to="/schedule">Schedule</RouterLink>
                 <RouterLink to="/test">Test1</RouterLink>
                 <RouterLink to="/test">Test02</RouterLink>
                 <RouterLink to="/test">Test3</RouterLink>
