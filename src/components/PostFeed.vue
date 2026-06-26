@@ -184,7 +184,7 @@ onMounted(() => {
 }
 
 .post {
-    border: 2px solid var(--color-primary);
+    border: 1px solid var(--color-primary);
     border-radius: 10px;
     width: 100%;
     max-width: 800px;

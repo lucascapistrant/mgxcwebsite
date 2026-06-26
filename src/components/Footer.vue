@@ -136,17 +136,17 @@ footer {
     width: 100%;
     display: flex;
     justify-content: center;
-    padding: 10px;
+    padding: 10px 0 20px 0;
 }
 
 
 .mobile-only {
     width: 70%;
     max-width: 250px;
-    background: var(--color-object);
+    background: var(--color-primary);
     padding: 10px;
     border-radius: 30px;
-    border: 2px solid var(--color-primary);
+    border: 2px solid var(--color-secondary);
     display: flex;
     flex-direction: row;
     gap: 1rem;
