@@ -10,7 +10,7 @@ media_folder: "public/images" # Where uploaded images go
 public_folder: "/images"       # How Vue references those images
 
 logo:
-  src: public/mgxc_logo.png
+  src: /public/mgxc_logo.png
   show_in_header: true
 
 collections:
@@ -50,3 +50,12 @@ collections:
       - { label: "Event Date", name: "event_date", widget: "datetime", format: "MMM, DD, YYYY h:mm A" }
       - { label: "Event Location", name: "event_location", widget: "string", required: false }
       - { label: "Event Description", name: "event_description", widget: "markdown", required: false }
+  - name: "records"
+    label: "Records"
+    folder: "src/content/records"
+    create: true
+    fields:
+      - { label: "Record Type", name: "record_type", widget: "select", options: ["5k Race", "2 Mile Race"] }
+      - { label: "Athlete Gender", name: "record_gender", widget: "select", options: ["Male", "Female"] }
+      - { label: "Athlete Name", name: "athlete_name", widget: "string" }
+      - { label: "Race Time", name: "race_time", widget: "string", hint: "Format as MM:SS.mm (e.g., 17:46.12 or 9:54.1)",pattern: ['^\d{1,2}:\d{2}\.\d{1,2}$', "Must be in minutes:seconds.milliseconds format (e.g., 17:46.12 or 9:54.1)"] }

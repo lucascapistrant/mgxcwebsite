@@ -31,10 +31,12 @@ function triggerAnimation() {
             <div class="nav_links" v-show="menuOpen" @click="menuOpen = false">
                 <RouterLink to="/">Home</RouterLink>
                 <RouterLink to="/schedule">Schedule</RouterLink>
-                <RouterLink to="/test">Test1</RouterLink>
-                <RouterLink to="/test">Test02</RouterLink>
-                <RouterLink to="/test">Test3</RouterLink>
-                <RouterLink to="/test">Test004</RouterLink>
+                <RouterLink to="/records">Records</RouterLink>
+                <RouterLink to="/coaches">Coaches</RouterLink>
+                <RouterLink to="/sponsors">Sponsors</RouterLink>
+                <RouterLink to="/off-season-training">Off-Season Training</RouterLink>
+                <RouterLink to="/boosters">Boosters</RouterLink>
+                <RouterLink to="/handbook">Handbook</RouterLink>
             </div>
         </Transition>
     </nav>

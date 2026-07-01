@@ -41,7 +41,7 @@ h3 {
   font-size: 2.5rem;
 }
 
-p, a, button {
+p, a, button, th, td {
   font-size: 1.7rem;
   font-family: var(--font-body);
   color: var(--color-text);
