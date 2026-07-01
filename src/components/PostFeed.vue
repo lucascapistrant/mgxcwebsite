@@ -103,7 +103,7 @@ onMounted(() => {
     </div>
 </Transition>
     <div class="feed">
-        <h2 class="heading">Team Feed</h2>
+        <h2 class="page-header heading">Team Feed</h2>
         <div v-for="post in posts" :key="post.id" class="post">
             <div class="post-header">
                 <h3>{{ post.title }}</h3>
@@ -151,7 +151,6 @@ onMounted(() => {
 
 .heading {
     margin: 2rem 0 0 0;
-    color: var(--color-secondary);
 }
 
 .overlay {

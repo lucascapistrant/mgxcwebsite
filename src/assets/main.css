@@ -47,6 +47,11 @@ p, a, button, th, td {
   color: var(--color-text);
 }
 
+.page-header {
+  color: var(--color-secondary);
+  text-align: center;
+}
+
 /* Desktop */
 @media screen and (min-width: 768px) {
   h1 {

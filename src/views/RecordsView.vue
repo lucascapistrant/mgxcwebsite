@@ -42,7 +42,7 @@ const filteredRecords = computed(() => {
 </script>
 
 <template>
-  <h2>Team Records</h2>
+  <h2 class="page-header">Team Records</h2>
 
   <div class="filters">
     <div class="filter-group">
@@ -84,10 +84,6 @@ const filteredRecords = computed(() => {
 </template>
 
 <style scoped>
-h2 {
-    text-align: center;
-    color: var(--color-secondary);
-}
 
 .filters {
     display: flex;

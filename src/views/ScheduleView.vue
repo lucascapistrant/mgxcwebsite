@@ -33,7 +33,7 @@ onMounted(async() => {
 </script>
 
 <template>
-<h2>Team Schedule</h2>
+<h2 class="page-header">Team Schedule</h2>
 <div class="schedule">
     <div v-for="(item, index) in scheduleItems" :key="index" class="schedule-item">
         <div class="schedule-header">
@@ -49,11 +49,6 @@ onMounted(async() => {
 </template>
 
 <style scoped>
-
-h2 {
-    text-align: center;
-    color: var(--color-secondary);
-}
 
 .schedule {
     padding: 10px;
