@@ -271,6 +271,7 @@ onMounted(() => {
     background: none;
     color: var(--color-primary);
     font-size: 4rem;
+    cursor: pointer;
 }
 
 .post-body {
