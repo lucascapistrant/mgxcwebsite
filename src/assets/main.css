@@ -4,6 +4,7 @@
   --color-secondary: #C8AD92;
   --color-background: #3A3A3A;
   --color-object: #1B1B1B;
+  --color-object-alt: #2B2B2B;
   --color-text: #fff;
   --font-body: Belanosima, sans-serif;
   --font-heading: Bowlby One SC, sans-serif;
@@ -24,7 +25,7 @@ body {
 }
 
 /* Typography */
-h1, h2, h3 {
+h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   color: var(--color-text);
 }
@@ -39,6 +40,10 @@ h2 {
 
 h3 {
   font-size: 2.5rem;
+}
+
+h4 {
+  font-size: 2.2rem;
 }
 
 p, a, button, th, td {

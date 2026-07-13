@@ -58,4 +58,16 @@ collections:
       - { label: "Record Type", name: "record_type", widget: "select", options: ["5k Race", "2 Mile Race"] }
       - { label: "Athlete Gender", name: "record_gender", widget: "select", options: ["Male", "Female"] }
       - { label: "Athlete Name", name: "athlete_name", widget: "string" }
-      - { label: "Race Time", name: "race_time", widget: "string", hint: "Format as MM:SS.mm (e.g., 17:46.12 or 9:54.1)",pattern: ['^\d{1,2}:\d{2}\.\d{1,2}$', "Must be in minutes:seconds.milliseconds format (e.g., 17:46.12 or 9:54.1)"] }
+      - { label: "Race Time Minutes", name: "race_time_minutes", widget: "number", min: 0, max: 59 }
+      - { label: "Race Time Seconds", name: "race_time_seconds", widget: "number", min: 0, max: 59 }
+      - { label: "Race Time Milliseconds", name: "race_time_milliseconds", widget: "number", min: 0, max: 999, required: false }
+  - name: "coaches"
+    label: "Coaches"
+    folder: "src/content/coaches"
+    create: true
+    fields:
+      - { label: "Coach Type", name: "coach_type", widget: "select", options: ["Head Coach", "Assistant Coach"] }
+      - { label: "Coach Name", name: "coach_name", widget: "string" }
+      - { label: "Coach Photo", name: "coach_photo", widget: "image" }
+      - { label: "Coach Contact Info", name: "coach_contact_info", widget: "string", required: false, hint: "Email or phone number" }
+      - { label: "Coach Bio", name: "coach_bio", widget: "markdown", required: false }
