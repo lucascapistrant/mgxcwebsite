@@ -20,10 +20,13 @@ onMounted(async () => {
         const rawText = fileModules[path];
         const parsed = fm(rawText);
         
-        if (parsed.attributes.athlete_name && parsed.attributes.race_time) {
+        if (parsed.attributes.athlete_name &&
+        parsed.attributes.race_time_minutes !== undefined &&
+        parsed.attributes.race_time_seconds !== undefined &&
+        parsed.attributes.race_time_milliseconds !== undefined) {
             loadedItems.push({
                 name: parsed.attributes.athlete_name,
-                time: parsed.attributes.race_time,
+                time: parsed.attributes.race_time_minutes + ':' + parsed.attributes.race_time_seconds + '.' + parsed.attributes.race_time_milliseconds,
                 gender: parsed.attributes.record_gender,
                 type: parsed.attributes.record_type
             });
@@ -137,15 +140,8 @@ tr:hover {
     background: var(--color-primary);
 }
 
-tr:nth-child(even)::after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    background: #fff;
-    opacity: 0.07;
+tr:nth-child(even) {
+    background: var(--color-object-alt);
 }
 
 .race-time {
