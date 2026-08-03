@@ -2,14 +2,13 @@
 import { ref, onMounted, onUnmounted, nextTick } from 'vue';
 import IconChevron from './icons/IconChevron.vue';
 
-// Move links to an array to allow programmatic moving to the dropdown
 const allLinks = [
     { to: "/", text: "Home" },
     { to: "/schedule", text: "Schedule" },
     { to: "/records", text: "Records" },
     { to: "/coaches", text: "Coaches" },
     { to: "/sponsors", text: "Sponsors" },
-    { to: "/off-season-training", text: "Off-Season Training" },
+    { to: "/off-season-training", text: "Summer Training" },
     { to: "/boosters", text: "Boosters" },
     { to: "/handbook", text: "Handbook" }
 ];
@@ -260,7 +259,7 @@ nav {
 
 .animate { 
     animation: wobble 0.3s ease-in-out; 
-} 
+}
 
 .icon {
     fill: var(--color-secondary);
