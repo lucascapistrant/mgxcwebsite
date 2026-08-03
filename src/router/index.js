@@ -19,9 +19,9 @@ const router = createRouter({
       component: HomeView
     },
     {
-        path: '/schedule',
-        name: 'schedule',
-        component: ScheduleView
+      path: '/schedule',
+      name: 'schedule',
+      component: ScheduleView
     },
     {
       path: '/records',
@@ -54,6 +54,15 @@ const router = createRouter({
       component: HandbookView
     }
   ],
+})
+
+// Intercept any navigation to /admin and force a hard browser load
+router.beforeEach((to, from, next) => {
+  if (to.path.startsWith('/admin')) {
+    window.location.href = to.fullPath
+  } else {
+    next()
+  }
 })
 
 export default router
