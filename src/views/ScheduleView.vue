@@ -27,14 +27,16 @@ onMounted(async() => {
         }
     }
 
-    scheduleItems.value = loadedItems;
-    console.log('Processed Schedule Data:', scheduleItems.value);
+    scheduleItems.value = loadedItems.sort((a, b) => new Date(a.date) - new Date(b.date));
 })
 </script>
 
 <template>
 <h2 class="page-header">Team Schedule</h2>
-<div class="schedule">
+<div v-if="scheduleItems.length === 0">
+    <p class="section-description">No schedule items found. <a href="/admin/index.html">Update this page.</a></p>
+</div>
+<div v-else class="schedule">
     <div v-for="(item, index) in scheduleItems" :key="index" class="schedule-item">
         <div class="schedule-header">
             <h3 class="schedule-title">{{ item.name }}</h3>

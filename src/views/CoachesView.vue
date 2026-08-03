@@ -43,7 +43,10 @@ onMounted(async() => {
 <template>
     <section>
         <h2 class="page-header">Head Coaches</h2>
-        <div class="coaches">
+        <div v-if="headCoaches.length === 0">
+            <p class="section-description">No head coaches found. <a href="/admin/index.html">Update this page.</a></p>
+        </div>
+        <div v-else class="coaches">
             <CoachProfile
                 v-for="(coach, index) in headCoaches"
                 :key="index"
@@ -58,6 +61,9 @@ onMounted(async() => {
     </section>
     <section>
         <h2 class="page-header">Assistant Coaches</h2>
+        <div v-if="assistantCoaches.length === 0">
+            <p class="section-description">No assistant coaches found. <a href="/admin/index.html">Update this page.</a></p>
+        </div>
         <div class="coaches">
             <CoachProfile
                 v-for="(coach, index) in assistantCoaches"
