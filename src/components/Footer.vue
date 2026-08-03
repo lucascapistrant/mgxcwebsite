@@ -1,3 +1,4 @@
+
 <script setup>
 import { ref, onMounted, nextTick, onUnmounted } from 'vue'
 import fm from 'front-matter';
@@ -8,13 +9,13 @@ import IconGithub from './icons/IconGithub.vue';
 const shouldScroll = ref(false)
 const containerRef = ref(null)
 const observer = ref(null);
-const scrollSpeed = 50; // px per second
+const scrollSpeed = 25; // px per second
 const scrollDuration = ref(0);
 
 const sponsors = ref([])
 
 onMounted(async() => {
-    const fileModules = import.meta.glob('../content/sponsor-logos/*.md', {
+    const fileModules = import.meta.glob('../content/sponsors/*.md', {
         query: '?raw',
         import: 'default',
         eager: true
@@ -29,13 +30,13 @@ onMounted(async() => {
         if (parsed.attributes.sponsor_logo) {
             loadedSponsors.push({
                 logo: parsed.attributes.sponsor_logo,
+                companyName: parsed.attributes.sponsor_name,
                 companyLink: parsed.attributes.company_link || '#' 
             });
         }
     }
 
     sponsors.value = loadedSponsors;
-    console.log('Processed Sponsors Data:', sponsors.value);
 
     await nextTick()
     
@@ -93,17 +94,17 @@ onUnmounted(() => {
             <div class="sponsors-track" :style="shouldScroll ? { animationDuration: scrollDuration + 's' } : {}" :class="{ scrolling: shouldScroll }">
                 <div id="sponsor-track-original">
                     <div class="sponsor" v-for="(sponsor, i) in sponsors" :key="'a' + i">
-                        <a :href="sponsor.companyLink" target="_blank">
+                        <RouterLink to="/sponsors">
                             <img :src="sponsor.logo" class="sponsor_img" alt="Sponsor Logo" @load="calculateShouldScroll">
-                        </a>
+                        </RouterLink>
                     </div>
                 </div>
                 
                 <template v-if="shouldScroll">
                     <div class="sponsor" v-for="(sponsor, i) in sponsors" :key="'b' + i">
-                        <a :href="sponsor.companyLink" target="_blank">
+                        <RouterLink to="/sponsors">
                             <img :src="sponsor.logo" class="sponsor_img" alt="Sponsor Logo">
-                        </a>
+                        </RouterLink>
                     </div>
                 </template>
 
@@ -122,7 +123,6 @@ onUnmounted(() => {
 footer {
     background: var(--color-primary);
     padding: 10px;
-    height: 125px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -166,8 +166,6 @@ footer {
     display: flex;
     flex-direction: column;
     align-items: center;
-    flex: 1;
-    min-height: 0;
     overflow: hidden;
     width: 90%;
 
@@ -196,8 +194,6 @@ footer {
 .sponsors-container {
     width: 100%;
     display: flex;
-    flex: 1;
-    min-height: 0;
     flex-direction: row;
     justify-content: space-around;
     mask-image: linear-gradient(
@@ -223,7 +219,7 @@ footer {
 
 .sponsors-track {
     display: flex;
-    flex: 1;
+    flex-direction: row;
 }
 
 .scrolling {
@@ -238,7 +234,6 @@ footer {
 
 #sponsor-track-original {
     display: flex;
-    flex: 1;
     flex-direction: row;
 }
 
@@ -248,20 +243,15 @@ footer {
 }
 
 .sponsor {
-    display: flex;
-    min-height: 0;
 
     a {
         display: flex;
-        flex-direction: column;
-        align-items: center;
         padding: 10px;
     }
 }
 
 .sponsor_img {
-    height: 100%;
-    width: auto;
+    height: 30px;
 }
 
 @media screen and (min-width: 768px) {

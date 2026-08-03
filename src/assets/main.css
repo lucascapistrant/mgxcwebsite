@@ -16,6 +16,7 @@
 
 html {
   font-size: 62.5%;
+  background: var(--color-primary);
 }
 
 body {
@@ -55,6 +56,17 @@ p, a, button, th, td {
 .page-header {
   color: var(--color-secondary);
   text-align: center;
+}
+
+.section-description {
+    text-align: center;
+    margin: 0;
+    color: var(--color-text);
+    opacity: .8;
+    a {
+      font-size: 2rem;
+        color: var(--color-secondary);
+    }
 }
 
 /* Desktop */

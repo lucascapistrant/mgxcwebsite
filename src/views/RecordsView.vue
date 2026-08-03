@@ -144,6 +144,10 @@ tr:nth-child(even) {
     background: var(--color-object-alt);
 }
 
+tr:nth-child(even):hover {
+    background: var(--color-primary);
+}
+
 .race-time {
     color: var(--color-secondary);
 }

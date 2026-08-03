@@ -1,25 +1,28 @@
-# Local testing configuration (explained in Step 3)
 local_backend: true
 
 backend:
   name: github
-  repo: lucascapistrant/mgxcwebsite # Path to your GitHub repo
+  repo: lucascapistrant/mgxcwebsite
   branch: main
+  # for deployment:
+  base_url: https://mgxc-decap-cms-oauth.vercel.app/
+  auth_endpoint: /auth
 
-media_folder: "public/images" # Where uploaded images go
-public_folder: "/images"       # How Vue references those images
+media_folder: "public/images"
+public_folder: "/images"
 
 logo:
   src: /public/mgxc_logo.png
   show_in_header: true
 
 collections:
-  - name: "sponsor-logos"
-    label: "Sponsor Logos"
-    folder: "src/content/sponsor-logos"
+  - name: "sponsors"
+    label: "Sponsors"
+    folder: "src/content/sponsors"
     create: true
     fields:
-      - { label: "Sponsor Logo", name: "sponsor_logo", widget: "image" }
+      - { label: "Sponsor Logo", name: "sponsor_logo", widget: "image", required: true }
+      - { label: "Sponsor Name", name: "sponsor_name", widget: "string", required: true }
       - { label: "Company Website Link", name: "company_link", widget: "string" }
   - name: "hero-images"
     label: "Front page images"
@@ -71,3 +74,18 @@ collections:
       - { label: "Coach Photo", name: "coach_photo", widget: "image" }
       - { label: "Coach Contact Info", name: "coach_contact_info", widget: "string", required: false, hint: "Email or phone number" }
       - { label: "Coach Bio", name: "coach_bio", widget: "markdown", required: false }
+  - name: "site-information"
+    label: "Site Information"
+    files:
+      - label: "Summer Practice Info"
+        name: "schedule_info"
+        file: "src/content/summer-training-info.json"
+        fields:
+          - { label: "Introduction Image", name: "introduction_image", widget: "image" }
+          - { label: "Introduction Header", name: "introduction_header", widget: "string" }
+          - { label: "Introduction Paragraph", name: "introduction_paragraph", widget: "markdown" }
+          - { label: "Communication Text", name: "communication_text", widget: "markdown" }
+          - { label: "What? Text", name: "what_text", widget: "markdown" }
+          - { label: "When? Text", name: "when_text", widget: "markdown" }
+          - { label: "Where? Text", name: "where_text", widget: "markdown" }
+          - { label: "Who? Text", name: "who_text", widget: "markdown" }
