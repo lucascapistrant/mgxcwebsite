@@ -79,12 +79,13 @@ onMounted(() => {
         const parsed = fm(rawText);
         
         const slugId = path.split('/').pop().replace('.md', '');
+        const options = { month: 'long', day: 'numeric', year: 'numeric' };
 
         loadedPosts.push({
             id: slugId,
             title: parsed.attributes.title || 'Untitled Post',
             rawDate: parsed.attributes.date ? new Date(parsed.attributes.date) : new Date(0),
-            date: parsed.attributes.date ? new Date(parsed.attributes.date).toLocaleDateString() : '',
+            date: parsed.attributes.date ? new Date(parsed.attributes.date).toLocaleDateString('en-US', options) : '',
             images: parsed.attributes.images || [],
             text: parsed.body || ''
         });
@@ -104,6 +105,7 @@ onMounted(() => {
 </Transition>
     <div class="feed">
         <h2 class="page-header heading">Team Feed</h2>
+        <p class="section-description">Regular team updates and communication is found on <a href="https://forms.zohopublic.com/safeteam1/form/MapleGroveCrossCountrySafeTeamRegistration/formperma/_lLgp0nr7KA2K8Om4Fj4LIGsa1UsUGO1VyztfR7A-GQ">SafeTeam</a>.</p>
         <div v-for="post in posts" :key="post.id" class="post">
             <div class="post-header">
                 <h3>{{ post.title }}</h3>
