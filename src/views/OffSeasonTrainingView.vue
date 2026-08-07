@@ -66,12 +66,11 @@ const parsedMarkdown = computed(() => {
 .media {
     width: 90%;
     max-width: 900px;
-    margin: 0 auto;
+    margin: 30px auto 30px auto;
     display: grid;
     grid-template-columns: 1fr;
     gap: 30px;
     align-items: center;
-    margin-top: 30px;
 
     img {
         width: 100%;
@@ -94,14 +93,10 @@ const parsedMarkdown = computed(() => {
     }
 }
 
-.parsed_markdown {
-    line-height: 1.5;
-    opacity: .8;
-}
-
 .info-blocks {
     width: 90%;
-    margin: 0 auto;
+    max-width: 900px;
+    margin: 0 auto 50px auto;
 }
 
 h3 {
