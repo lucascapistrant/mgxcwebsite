@@ -22,7 +22,7 @@ html {
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--color-background);
+  background: var(--color-primary);
 }
 
 /* Typography */
@@ -51,6 +51,17 @@ p, a, button, th, td {
   font-size: 1.7rem;
   font-family: var(--font-body);
   color: var(--color-text);
+}
+
+.parsed_markdown p {
+    opacity: .8;
+    line-height: 1.5;
+}
+
+.parsed_markdown a {
+    color: var(--color-secondary);
+    text-decoration: underline;
+    font-weight: bold;
 }
 
 .page-header {

@@ -23,6 +23,7 @@ body {
 
 main {
   flex: 1;
+  background: var(--color-background);
 }
 
 
