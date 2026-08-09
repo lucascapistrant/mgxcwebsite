@@ -143,15 +143,12 @@ onUnmounted(() => {
 .tagline {
     text-align: center;
     color: var(--color-primary);
-    font-size: 4.5rem;
+    font-size: 7cqw;
     margin: 0;
     position: absolute;
-    transform: translate(-50%, -50%);
-    top: 50%;
-    left: 50%;
+    bottom: 10px;
     z-index: 2;
     width: 100%;
-    max-width: 400px;
 }
 
 .images-container {
@@ -173,14 +170,18 @@ onUnmounted(() => {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: var(--color-secondary);
+    background: linear-gradient(
+        to bottom,
+        transparent,
+        transparent 40%,
+        black
+    );
     z-index: 1;
-    opacity: 50%;
 }
 
 .scroll-indicator {
     position: absolute;
-    bottom: 0;
+    top: 0;
     left: 50%;
     transform: translateX(-50%);
     margin: 10px;
@@ -241,6 +242,12 @@ onUnmounted(() => {
             transparent,
             black
         );
+        opacity: 0.7;
+    }
+
+    .scroll-indicator {
+        top: auto;
+        bottom: 0;
     }
 
     .hero-text {

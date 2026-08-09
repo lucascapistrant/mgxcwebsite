@@ -3,7 +3,7 @@ import { ref, onMounted, computed } from 'vue';
 import fm from 'front-matter';
 
 const allPosts = ref([]);
-const postsPerPage = 2; // How many posts to add on "Load More"
+const postsPerPage = 10; // How many posts to add on "Load More"
 const displayCount = ref(postsPerPage); // How many posts to show initially
 const loading = ref(false);
 
@@ -273,6 +273,7 @@ onMounted(() => {
     color: var(--color-primary);
     font-size: 4rem;
     cursor: pointer;
+      touch-action: manipulation;
 }
 
 .post-body {
