@@ -73,7 +73,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-<div class="socials-container">
+<div class="socials-container mobile">
     <div class="socials-section mobile-only">
         <a href="https://forms.zohopublic.com/safeteam1/form/MapleGroveCrossCountrySafeTeamRegistration/formperma/_lLgp0nr7KA2K8Om4Fj4LIGsa1UsUGO1VyztfR7A-GQ" target="_blank"><img src="../assets/hello-team-logo.webp" alt="Safe Team Website Link" class="icon"></a>
         <a href="https://x.com/mgcrimsonxc" target="_blank"><IconX class="icon"/></a>
@@ -137,8 +137,8 @@ footer {
     display: flex;
     justify-content: center;
     padding: 10px 0 20px 0;
+    background: var(--color-background);
 }
-
 
 .mobile-only {
     width: 70%;
