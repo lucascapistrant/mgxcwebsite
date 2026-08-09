@@ -3,7 +3,7 @@ import { ref, onMounted, computed } from 'vue';
 import fm from 'front-matter';
 
 const allPosts = ref([]);
-const postsPerPage = 10; // How many posts to add on "Load More"
+const postsPerPage = 2; // How many posts to add on "Load More"
 const displayCount = ref(postsPerPage); // How many posts to show initially
 const loading = ref(false);
 
@@ -128,7 +128,7 @@ onMounted(() => {
         </div>
         
         <button 
-            class="load-more"
+            class="btn-outline"s
             :class="{loading: loading}"
             v-if="hasMore" 
             @click="loadMore"
@@ -280,16 +280,6 @@ onMounted(() => {
         line-height: 1.5;
         margin: 0;
     }
-}
-
-.load-more {
-    background: none;
-    outline: none;
-    border: none;
-    color: var(--color-secondary);
-    padding: 10px;
-    border-radius: 30px;
-    border: 4px solid var(--color-secondary);
 }
 
 .loading {

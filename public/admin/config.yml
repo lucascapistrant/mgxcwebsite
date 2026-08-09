@@ -1,4 +1,4 @@
-local_backend: true
+local_backend: false
 
 backend:
   name: github
@@ -89,3 +89,14 @@ collections:
           - { label: "When? Text", name: "when_text", widget: "markdown" }
           - { label: "Where? Text", name: "where_text", widget: "markdown" }
           - { label: "Who? Text", name: "who_text", widget: "markdown" }
+      - label: "Handbook"
+        name: "handbook"
+        file: "src/content/handbook.json"
+        fields:
+          - label: "Upload PDF"
+            name: "handbook_pdf"
+            widget: "file"
+            required: true
+            media_library:
+              config:
+                allowed_mime_types: ["application/pdf"]
