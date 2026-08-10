@@ -114,6 +114,8 @@ onUnmounted(() => {
     <div class="weblinks-section">
         <a href="https://maplegrovetrack.github.io/" target="_blank">Maple Grove Track and Field</a>
         <a href="#" target="_blank">Maple Grove Nordic Ski</a>
+        <a href="/admin/index.html" target="_blank">Admin Panel</a>
+        <a href="/about" target="_blank">About this Site</a>
     </div>
 </footer>
 </template>
@@ -123,13 +125,26 @@ onUnmounted(() => {
 footer {
     background: var(--color-primary);
     padding: 10px;
+    padding-bottom: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 10px;
 }
 
-.socials-section, .weblinks-section {
+.socials-section {
     display: none;
+}
+
+.weblinks-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+    a {
+          text-decoration: none;
+          color: var(--color-secondary);
+    }
 }
 
 .socials-container {
@@ -256,11 +271,11 @@ footer {
 
 @media screen and (min-width: 768px) {
     footer {
-        height: 75px;
-        padding: 5px 10px;
+        padding: 10px;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
+        gap: 0;
     }
 
     .sponsors-section {
@@ -297,19 +312,36 @@ footer {
         }
     }
 
+    .sponsor_img {
+        height: 50px;
+    }
+
     .icon {
         width: 30px;
         fill: var(--color-secondary);
     }
 
     .weblinks-section {
-        display: flex;
-        flex-direction: column;
         gap: .5rem;
+        align-items: end;
         a {
-              text-decoration: none;
-              color: var(--color-secondary);
+            width: fit-content;
+            position: relative;
         }
+        a::after { 
+            content: ''; 
+            position: absolute; 
+            bottom: 0px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            width: 0; 
+            height: 1px; 
+            background-color: currentColor; 
+            transition: width 0.3s ease; 
+        } 
+        a:hover::after { 
+            width: 98%; 
+        } 
     }
 }
 
