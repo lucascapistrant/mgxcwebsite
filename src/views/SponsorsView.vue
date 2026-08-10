@@ -66,6 +66,8 @@ onMounted(async() => {
     width: 100%;
     text-align: center;
     max-width: 200px;
+    display: flex;
+    flex-direction: column;
 }
 
 .sponsor-link-container {
@@ -77,7 +79,14 @@ onMounted(async() => {
 
 }
 
+.img {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
 .sponsor_img {
+    height: fit-content;
     width: 100%;
 }
 

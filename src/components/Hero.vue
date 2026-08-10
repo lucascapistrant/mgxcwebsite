@@ -134,6 +134,7 @@ onUnmounted(() => {
     height: 100%;
     position: absolute;
     z-index: 3;
+    touch-action: pan-x;
 }
 
 .title {

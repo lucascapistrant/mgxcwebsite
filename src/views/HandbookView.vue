@@ -5,6 +5,9 @@ import handbook from '@/content/handbook.json'
 <template>
     <h2 class="page-header">Team Handbook</h2>
     <div class="pdf-container">
+        <a :href="handbook.handbook_pdf" target="_blank">
+            <button class="btn-outline">View/Download PDF</button>
+        </a>
         <iframe 
           v-if="handbook.handbook_pdf" 
           :src="handbook.handbook_pdf" 
@@ -12,9 +15,6 @@ import handbook from '@/content/handbook.json'
         >
             <p>Your browser does not support PDFs.<a :href="handbook.handbook_pdf">Download the PDF</a>.</p>
         </iframe>
-        <a :href="handbook.handbook_pdf" target="_blank">
-            <button class="btn-outline">View/Download PDF</button>
-        </a>
     </div>
 </template>
 
