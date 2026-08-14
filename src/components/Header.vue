@@ -183,7 +183,6 @@ header {
 } 
 
 nav { 
-    height: fit-content; 
     z-index: 10; 
 
     button { 

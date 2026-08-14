@@ -86,7 +86,6 @@ onMounted(async() => {
 }
 
 .sponsor_img {
-    height: fit-content;
     width: 100%;
 }
 
