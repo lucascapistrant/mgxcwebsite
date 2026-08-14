@@ -1,4 +1,4 @@
-local_backend: false
+local_backend: true
 
 backend:
   name: github
@@ -77,6 +77,16 @@ collections:
   - name: "site-information"
     label: "Site Information"
     files:
+      - label: "Site Links"
+        name: "site_links"
+        file: "src/content/site-links.json"
+        fields:
+          - { label: "Instagram Link", name: "instagram_link", widget: "string" }
+          - { label: "GitHub Link", name: "github_link", widget: "string" }
+          - { label: "X Link", name: "x_link", widget: "string" }
+          - { label: "SafeTeam Link", name: "safeteam_link", widget: "string" }
+          - { label: "Track and Field Link", name: "track_and_field_link", widget: "string" }
+          - { label: "Nordic Link", name: "nordic_link", widget: "string" }
       - label: "Summer Practice Info"
         name: "schedule_info"
         file: "src/content/summer-training-info.json"

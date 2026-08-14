@@ -1,10 +1,11 @@
 
 <script setup>
-import { ref, onMounted, nextTick, onUnmounted } from 'vue'
+import { ref, computed, onMounted, nextTick, onUnmounted } from 'vue'
 import fm from 'front-matter';
 import IconInstagram from './icons/IconInstagram.vue';
 import IconX from './icons/IconX.vue';
 import IconGithub from './icons/IconGithub.vue';
+import links from '@/content/site-links.json'
 
 const shouldScroll = ref(false)
 const containerRef = ref(null)
@@ -13,6 +14,18 @@ const scrollSpeed = 25; // px per second
 const scrollDuration = ref(0);
 
 const sponsors = ref([])
+const linksData = ref(links)
+
+const computedLinks = computed(() => {
+    return {
+        instagram_link: linksData.value.instagram_link || '#',
+        github_link: linksData.value.github_link || '#',
+        x_link: linksData.value.x_link || '#',
+        safeteam_link: linksData.value.safeteam_link || '#',
+        track_and_field_link: linksData.value.track_and_field_link || '#',
+        nordic_link: linksData.value.nordic_link || '#'
+    }
+})
 
 onMounted(async() => {
     const fileModules = import.meta.glob('../content/sponsors/*.md', {
@@ -75,18 +88,18 @@ onUnmounted(() => {
 <template>
 <div class="socials-container mobile">
     <div class="socials-section mobile-only">
-        <a href="https://forms.zohopublic.com/safeteam1/form/MapleGroveCrossCountrySafeTeamRegistration/formperma/_lLgp0nr7KA2K8Om4Fj4LIGsa1UsUGO1VyztfR7A-GQ" target="_blank"><img src="../assets/hello-team-logo.webp" alt="Safe Team Website Link" class="icon"></a>
-        <a href="https://x.com/mgcrimsonxc" target="_blank"><IconX class="icon"/></a>
-        <a href="https://www.instagram.com/mg.crosscountry/" target="_blank"><IconInstagram class="icon"/></a>
-        <a href="https://github.com/lucascapistrant/mgxcwebsite" target="_blank"><IconGithub class="icon"/></a>
+        <a :href="computedLinks.safeteam_link" target="_blank"><img src="../assets/hello-team-logo.webp" alt="Safe Team Website Link" class="icon"></a>
+        <a :href="computedLinks.x_link" target="_blank"><IconX class="icon"/></a>
+        <a :href="computedLinks.instagram_link" target="_blank"><IconInstagram class="icon"/></a>
+        <a :href="computedLinks.github_link" target="_blank"><IconGithub class="icon"/></a>
     </div>
 </div>
 <footer>
     <div class="socials-section desktop-only">
-        <a href="https://forms.zohopublic.com/safeteam1/form/MapleGroveCrossCountrySafeTeamRegistration/formperma/_lLgp0nr7KA2K8Om4Fj4LIGsa1UsUGO1VyztfR7A-GQ" target="_blank"><img src="../assets/hello-team-logo.webp" alt="Safe Team Website Link" class="icon"></a>
-        <a href="https://x.com/mgcrimsonxc" target="_blank"><IconX class="icon"/></a>
-        <a href="https://www.instagram.com/mg.crosscountry/" target="_blank"><IconInstagram class="icon"/></a>
-        <a href="https://github.com/lucascapistrant/mgxcwebsite" target="_blank"><IconGithub class="icon"/></a>
+        <a :href="computedLinks.safeteam_link" target="_blank"><img src="../assets/hello-team-logo.webp" alt="Safe Team Website Link" class="icon"></a>
+        <a :href="computedLinks.x_link" target="_blank"><IconX class="icon"/></a>
+        <a :href="computedLinks.instagram_link" target="_blank"><IconInstagram class="icon"/></a>
+        <a :href="computedLinks.github_link" target="_blank"><IconGithub class="icon"/></a>
     </div>
     <div class="sponsors-section">
         <h2>SPONSORS</h2>
@@ -112,8 +125,8 @@ onUnmounted(() => {
         </div>
     </div>
     <div class="weblinks-section">
-        <a href="https://maplegrovetrack.github.io/" target="_blank">Maple Grove Track and Field</a>
-        <a href="#" target="_blank">Maple Grove Nordic Ski</a>
+        <a :href="links.track_and_field_link" target="_blank">Maple Grove Track and Field</a>
+        <a :href="links.nordic_link" target="_blank">Maple Grove Nordic Ski</a>
         <a href="/admin/index.html" target="_blank">Admin Panel</a>
         <a href="/about" target="_blank">About this Site</a>
     </div>
