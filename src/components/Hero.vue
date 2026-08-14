@@ -118,7 +118,6 @@ onUnmounted(() => {
         <img v-for="(img, i) in imagesWithClone" :src="img" :key="i" class="img">
     </div>
 </div>
-<a href="/admin/index.html" rel="noopener">Go to Admin Panel</a>
 </template>
 
 <style scoped>
