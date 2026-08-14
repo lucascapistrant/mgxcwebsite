@@ -13,10 +13,10 @@ const allLinks = [
     { to: "/handbook", text: "Handbook" }
 ];
 
-const menuOpen = ref(false);       // Mobile menu state
-const chevronOpen = ref(false);    // Desktop chevron dropdown state
+const menuOpen = ref(false);
+const chevronOpen = ref(false);
 const animate = ref(false);
-const isDesktop = ref(false);      // Track if we are above the 768px breakpoint
+const isDesktop = ref(false);
 
 const visibleLinks = ref([...allLinks]);
 const dropdownLinks = ref([]);
@@ -28,7 +28,6 @@ function triggerAnimation() {
     }, 0);
 }
 
-// 1. Calculate the space between the end of the logo and the rest of the header
 function calculateRemainingSpace() {
     const header = document.querySelector('header');
     const logo = document.querySelector('.logo');
@@ -41,61 +40,47 @@ function calculateRemainingSpace() {
     const headerWidth = header.clientWidth;
     const logoWidth = logo.getBoundingClientRect().width;
 
-    // Remaining space = Total width - Logo space - Header horizontal paddings
     return headerWidth - logoWidth - paddingLeft - paddingRight;
 }
 
-// 2. The recursive function that continually works until the links fit
 async function adjustLinksRecursively() {
     const navLinksEl = document.querySelector('.nav_links');
     if (!navLinksEl || visibleLinks.value.length <= 1) return;
 
-    // Step A: Calculate current nav_links width
     const navLinksWidth = navLinksEl.offsetWidth;
-    
-    // Step B: Calculate remaining space
     const remainingSpace = calculateRemainingSpace();
 
-    // Step C: Check lengths. If longer, add one link to dropdown and repeat.
     if (navLinksWidth > remainingSpace) {
         addToDropdown();
-        
-        // Wait for Vue to update the DOM layout width before checking lengths again
         await nextTick(); 
         await adjustLinksRecursively();
     }
 }
 
-// 3. Move a single link from the visible row to the dropdown array
 function addToDropdown() {
     if (visibleLinks.value.length > 0) {
         const linkToMove = visibleLinks.value.pop();
-        dropdownLinks.value.unshift(linkToMove); // Push to the top of the dropdown list
+        dropdownLinks.value.unshift(linkToMove);
     }
 }
 
-// Main orchestrator called on mount and window resize
 async function handleLayoutAdjustment() {
     isDesktop.value = window.innerWidth >= 768;
 
     if (!isDesktop.value) {
-        // Reset everything if on mobile layout
         visibleLinks.value = [...allLinks];
         dropdownLinks.value = [];
         return;
     }
 
-    // Reset layout arrays to default before calculating clean desktop spacing
     visibleLinks.value = [...allLinks];
     dropdownLinks.value = [];
     chevronOpen.value = false;
 
-    // Wait for the DOM to render all links inline horizontally
     await nextTick();
     await adjustLinksRecursively();
 }
 
-// Close desktop chevron dropdown when clicking anywhere else
 function closeChevronOutside(e) {
     const chevronContainer = document.querySelector('.chevron_dropdown');
     if (chevronContainer && !chevronContainer.contains(e.target)) {
@@ -127,9 +112,8 @@ onUnmounted(() => {
         <button class="nav_button" @click="menuOpen = !menuOpen; triggerAnimation()"> 
             <img class="nav_logo" src="../assets/mgxc_hamburger.svg" alt="Navigate" :class="{ animate }"> 
         </button> 
-        <div class="overlay" @click="menuOpen = false" v-show="menuOpen"></div> 
         
-        <Transition name="nav-slide"> 
+        <Transition name="nav-dropdown"> 
             <div class="nav_links" v-show="menuOpen || isDesktop" @click="!isDesktop ? menuOpen = false : null"> 
                 
                 <template v-if="isDesktop">
@@ -158,7 +142,9 @@ onUnmounted(() => {
             </div> 
         </Transition> 
     </nav> 
-</header> 
+</header>
+
+<div class="overlay" @click="menuOpen = false" v-show="menuOpen && !isDesktop"></div>
 </template> 
 
 <style scoped> 
@@ -168,6 +154,8 @@ header {
     justify-content: space-between; 
     align-items: center; 
     padding: 10px; 
+    position: relative;
+    z-index: 20;
 } 
 
 .logo { 
@@ -179,8 +167,6 @@ header {
     } 
     h1 { 
         margin: 0; 
-    } 
-     h1{ 
         font-size: 2rem; 
         color: var(--color-secondary); 
     } 
@@ -214,19 +200,26 @@ nav {
     position: absolute; 
     display: flex; 
     flex-direction: column; 
-    right: 0; 
-    top: 0; 
-    padding: 20px; 
-    padding-top: 80px; 
+    left: 0; 
+    top: 100%; 
+    width: 100%;
+    padding: 15px 20px; 
     box-sizing: border-box; 
-    border-radius: 30px 0 0 30px; 
     background: var(--color-primary); 
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    max-height: 500px;
+    
     a { 
-        color: var(--color-secondary); 
-        font-size: 3rem; 
-        padding: 10px 0; 
+        color: var(--color-secondary);  
+        padding: 12px 0; 
         text-decoration: none; 
-        text-align: right; 
+        text-align: center; 
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+        &:last-child {
+            border-bottom: none;
+        }
     } 
 } 
 
@@ -236,18 +229,21 @@ nav {
     text-underline-offset: 3px !important; 
 } 
 
-.nav-slide-enter-active, 
-.nav-slide-leave-active { 
-    transition: all 0.3s ease-out; 
+/* Height-based expanding animation starting directly from the bottom edge */
+.nav-dropdown-enter-active, 
+.nav-dropdown-leave-active { 
+    transition: max-height 0.25s ease-in-out, padding 0.25s ease-in-out; 
 } 
 
-.nav-slide-enter-from, 
-.nav-slide-leave-to { 
-  transform: translateX(100%); 
+.nav-dropdown-enter-from, 
+.nav-dropdown-leave-to { 
+    max-height: 0; 
+    padding-top: 0;
+    padding-bottom: 0;
 } 
 
 .overlay { 
-    z-index: 0; 
+    z-index: 5; 
     position: fixed; 
     top: 0; 
     left: 0; 
@@ -280,12 +276,18 @@ nav {
         align-items: center;
         position: relative; 
         padding: 0; 
+        width: auto;
+        box-shadow: none;
+        max-height: none;
+        overflow: visible;
 
         a { 
             font-size: 2rem; 
             margin: 0 15px; 
             padding: 0; 
             position: relative; 
+            text-align: left;
+            border-bottom: none;
         } 
         a::after { 
             content: ''; 
@@ -303,7 +305,6 @@ nav {
         } 
     } 
 
-    /* Chevron Dropdown Mechanical Styles */
     .chevron_dropdown {
         position: relative;
         display: inline-block;
@@ -348,7 +349,6 @@ nav {
     }
 } 
 
-/* animations */ 
 @keyframes wobble { 
     0%   { transform: scale(1)    rotate(0deg); } 
     25%  { transform: scale(0.9)  rotate(-15deg); } 
