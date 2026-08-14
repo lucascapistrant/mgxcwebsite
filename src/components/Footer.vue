@@ -271,7 +271,7 @@ footer {
 
 @media screen and (min-width: 768px) {
     footer {
-        padding: 10px;
+        padding: 10px 20px;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
